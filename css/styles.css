@@ -8,8 +8,15 @@ background-size: cover;
 }
 
 /* TODO: Styling by html elemnt: add styling for h1 and h2 */
-
+h1, h2 {
+  font-weight: 400;
+  font-size: 200px;
+}
 /* TODO: Styling by id: add styling for #title */
+#title {
+  color: #FC8C93;
+  line-height: 50px;
+}
 
 #question {
   display: inline;
@@ -17,6 +24,11 @@ background-size: cover;
 }
 
 /* TODO: Styling by id: add styling for canvas */
+#my-canvas {
+  vertical-align: top;
+  display: inline;
+  border: 5px solid #FFFFFF;
+}
 
 .container {
   text-align: center;
@@ -40,4 +52,7 @@ background-size: cover;
 }
 
 /* TODO: Styling by class: add Styling for button on hover */
-
+.btn:hover {
+  background-color: #242E6B;
+  color: #FFFFFF;
+}
