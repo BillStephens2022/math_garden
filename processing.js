@@ -157,8 +157,23 @@ function predictImage() {
   // implement the shift calc'd above to shift the image
   newSize = new cv.Size(image.cols, image.rows);
   let M = cv.matFromArray(2, 3, cv.CV_64FC1, [1, 0, X_SHIFT, 0, 1, Y_SHIFT]);
-  cv.warpAffine(image, image, M, newSize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, BLACK);
+  cv.warpAffine(
+    image,
+    image,
+    M,
+    newSize,
+    cv.INTER_LINEAR,
+    cv.BORDER_CONSTANT,
+    BLACK
+  );
 
+  // normalize pixel values by dividing by 255 to get a value between 0 and 1.
+  let pixelValues = image.data;
+  pixelValues = Float32Array.from(pixelValues);  // converts array of integers to float values
+  pixelValues  = pixelValues.map((item) => {  // normalize pixel values by dividing by 255 to get a value between 0 and 1.
+    return item / 255.0;
+  });
+  console.log(`scaled array: ${pixelValues}`)
   // Testing only (delete later)
   const outputCanvas = document.createElement("CANVAS");
   cv.imshow(outputCanvas, image);
