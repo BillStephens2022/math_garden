@@ -94,8 +94,7 @@ function predictImage() {
   // crop the 'region of interest' (aka 'roi') and save it into the image variable.
   image = image.roi(rect);
 
-
-  // Resize the Image (image will have its largest size equal to 20 pixels, 
+  // Resize the Image (image will have its largest size equal to 20 pixels,
   // smaller side will be rescaled and thus be less than 20 pixels)
   // note: resizing is necessary as our model has been trained on 28 x 28 pixel images.
   // after resizing to max width of 20 pixels to a side, will add padding to make it 28 x 28.
@@ -114,7 +113,7 @@ function predictImage() {
 
   let newSize = new cv.Size(width, height);
   cv.resize(image, image, newSize, 0, 0, cv.INTER_AREA);
-  
+
   // add padding to make the final size of image to be 28 x 28
   // calculate padding for each side
   const LEFT = Math.ceil(4 + (20 - width) / 2);
@@ -125,7 +124,40 @@ function predictImage() {
 
   // add the calculated padding (using black color) to the image
   const BLACK = new cv.Scalar(0, 0, 0, 0);
-  cv.copyMakeBorder(image, image, TOP, BOTTOM, LEFT, RIGHT, cv.BORDER_CONSTANT, BLACK);
+  cv.copyMakeBorder(
+    image,
+    image,
+    TOP,
+    BOTTOM,
+    LEFT,
+    RIGHT,
+    cv.BORDER_CONSTANT,
+    BLACK
+  );
+
+  // find the center of mass of the image
+  cv.findContours(
+    image,
+    contours,
+    hierarchy,
+    cv.RETR_CCOMP,
+    cv.CHAIN_APPROX_SIMPLE
+  );
+  cnt = contours.get(0);
+  const Moments = cv.moments(cnt, false);
+  // x coordinate of the center of mass
+  let cx = Moments.m10 / Moments.m00;
+  let cy = Moments.m01 / Moments.m00;
+  console.log(`M00: ${Moments.m00}`);
+  console.log(`Center of mass: cx: ${cx}, cy: ${cy}`);
+
+  // center image based on center of mass
+  const X_SHIFT = Math.round(image.cols / 2.0 - cx); // diff b/t midpoint and center of mass (horizontal)
+  const Y_SHIFT = Math.round(image.cols / 2.0 - cy); // diff b/t midpoint and center of mass (vertical)
+  // implement the shift calc'd above to shift the image
+  newSize = new cv.Size(image.cols, image.rows);
+  let M = cv.matFromArray(2, 3, cv.CV_64FC1, [1, 0, X_SHIFT, 0, 1, Y_SHIFT]);
+  cv.warpAffine(image, image, M, newSize, cv.INTER_LINEAR, cv.BORDER_CONSTANT, BLACK);
 
   // Testing only (delete later)
   const outputCanvas = document.createElement("CANVAS");
@@ -137,4 +169,5 @@ function predictImage() {
   contours.delete();
   cnt.delete();
   hierarchy.delete();
+  M.delete();
 }
