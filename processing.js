@@ -5,8 +5,6 @@ async function loadModel() {
 }
 
 function predictImage() {
-  console.log("processing...");
-
   let image = cv.imread(canvas);
 
   // params=(input, output, method (i.e. convert color to gray),
@@ -125,12 +123,15 @@ function predictImage() {
   const result = model.predict(X);
   result.print();
 
-  console.log(tf.memory());
+  // console.log(tf.memory());
+
+  // download prediction value from tensor
+  const output = result.dataSync()[0];
 
   // Testing only (delete later)
-  const outputCanvas = document.createElement("CANVAS");
-  cv.imshow(outputCanvas, image);
-  document.body.appendChild(outputCanvas);
+  //   const outputCanvas = document.createElement("CANVAS");
+  //   cv.imshow(outputCanvas, image);
+  //   document.body.appendChild(outputCanvas);
 
   // Cleanup - delete after creating (recommended in OpenCV documentation)
   image.delete();
@@ -140,4 +141,6 @@ function predictImage() {
   M.delete();
   X.dispose();
   result.dispose();
+
+  return output;
 }
