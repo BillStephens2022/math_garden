@@ -80,13 +80,52 @@ function predictImage() {
   // find the contours for what was drawn on canvas
   let contours = new cv.MatVector();
   let hierarchy = new cv.Mat();
-  cv.findContours(image, contours, hierarchy, cv.RETR_CCOMP, cv.CHAIN_APPROX_SIMPLE);
+  cv.findContours(
+    image,
+    contours,
+    hierarchy,
+    cv.RETR_CCOMP,
+    cv.CHAIN_APPROX_SIMPLE
+  );
 
   // calculate the bounding rectangle for what was drawn on canvas
   let cnt = contours.get(0);
   let rect = cv.boundingRect(cnt);
-  // crop the 'region of interest'/'roi' and save it into the image variable.
+  // crop the 'region of interest' (aka 'roi') and save it into the image variable.
   image = image.roi(rect);
+
+
+  // Resize the Image (image will have its largest size equal to 20 pixels, 
+  // smaller side will be rescaled and thus be less than 20 pixels)
+  // note: resizing is necessary as our model has been trained on 28 x 28 pixel images.
+  // after resizing to max width of 20 pixels to a side, will add padding to make it 28 x 28.
+  let height = image.rows;
+  let width = image.cols;
+
+  if (height > width) {
+    height = 20;
+    const scaleFactor = image.rows / height;
+    width = Math.round(image.cols / scaleFactor);
+  } else {
+    width = 20;
+    const scaleFactor = image.cols / width;
+    height = Math.round(image.rows / scaleFactor);
+  }
+
+  let newSize = new cv.Size(width, height);
+  cv.resize(image, image, newSize, 0, 0, cv.INTER_AREA);
+  
+  // add padding to make the final size of image to be 28 x 28
+  // calculate padding for each side
+  const LEFT = Math.ceil(4 + (20 - width) / 2);
+  const RIGHT = Math.floor(4 + (20 - width) / 2);
+  const TOP = Math.ceil(4 + (20 - height) / 2);
+  const BOTTOM = Math.floor(4 + (20 - height) / 2);
+  console.log(`top: ${TOP}, bottom: ${BOTTOM}, left: ${LEFT}, right: ${RIGHT}`);
+
+  // add the calculated padding (using black color) to the image
+  const BLACK = new cv.Scalar(0, 0, 0, 0);
+  cv.copyMakeBorder(image, image, TOP, BOTTOM, LEFT, RIGHT, cv.BORDER_CONSTANT, BLACK);
 
   // Testing only (delete later)
   const outputCanvas = document.createElement("CANVAS");
