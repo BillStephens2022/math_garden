@@ -1,7 +1,7 @@
 <html lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <!-- Custom styling -->
+    <!-- CSS stylesheet -->
     <link rel="stylesheet" href="./css/styles.css" />
     <!-- Custom font -->
     <link
@@ -9,23 +9,21 @@
       href="https://fonts.googleapis.com/css?family=Just+Another+Hand&display=swap"
     />
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    
     <!-- OpenCV - file saved from from "https://docs.opencv.org/4.1.0/opencv.js" -->
     <script src="./vendor/opencv.js"></script>
-    <!-- TODO: Add Javascript files here -->
+   
     
-    <script src="./drawing.js"></script>
-    <script src="./processing.js"></script>
-    <script src="./maths.js"></script>
   </head>
 
   <body>
     <div class="container">
-      <!-- TODO: Add title here -->
+     
       <h1 id="title">Math Garden</h1>
 
       <h2 id="question"><span id="n1">3</span> + <span id="n2">2</span> =</h2>
 
-      <!-- TODO: Add a drawing canvas here -->
+      <!-- drawing canvas  -->
       <canvas id="my-canvas" width="150" height="150"></canvas>
     </div>
 
@@ -33,8 +31,16 @@
       <button id="checkAnswer" class="btn" value="Check">Check Answer</button>
     </div>
 
-    <!-- TODO: Set up TF model and drawing logic-->
-    
+    <div id="message-div">
+      <p id="message-p" class="hidden"><span id="right-wrong" class="hidden"></span><span id="message" class="hidden"></span></p>
+    </div>
+
+    </body>
+    <!-- javascript files -->
+    <script src="./drawing.js"></script>
+    <script src="./processing.js"></script>
+    <script src="./maths.js"></script>
+    <!-- inline javascript -->
     <script>
       
       loadModel();

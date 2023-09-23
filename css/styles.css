@@ -5,14 +5,14 @@ width: 100%;
 background-position: top;
 background-repeat: no-repeat;
 background-size: cover;
+padding: 5%;
 }
 
-/* TODO: Styling by html element: add styling for h1 and h2 */
 h1, h2 {
   font-weight: 400;
   font-size: 200px;
 }
-/* TODO: Styling by id: add styling for #title */
+
 #title {
   color: #FC8C93;
   line-height: 50px;
@@ -23,11 +23,11 @@ h1, h2 {
   color: #FFFFFF;
 }
 
-/* TODO: Styling by id: add styling for canvas */
 #my-canvas {
   vertical-align: top;
   display: inline;
   border: 5px solid #FFFFFF;
+  margin-left: 1.5rem;
 }
 
 .container {
@@ -51,8 +51,44 @@ h1, h2 {
 	text-decoration:none;
 }
 
-/* TODO: Styling by class: add Styling for button on hover */
 .btn:hover {
   background-color: #242E6B;
   color: #FFFFFF;
+}
+
+#message-div {
+  display: flex;
+  justify-content: center;
+  
+}
+
+#message-p {
+  font-size: 2.5rem;
+  font-weight: 900;
+  letter-spacing: 0.15rem;
+  text-align: center;
+  background-color: #FC8C93;
+  color: #FFFFFF;
+  border-radius: 10px;
+  padding: 1rem;
+  text-shadow:#242E6B 3px 3px 3px;
+  border: 3px white solid;
+  max-width: 35%;
+  flex-wrap: wrap;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: chartreuse;
+}
+
+.blue {
+  color: #242E6B;
 }
